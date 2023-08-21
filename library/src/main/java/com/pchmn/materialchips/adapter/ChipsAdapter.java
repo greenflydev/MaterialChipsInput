@@ -1,12 +1,9 @@
 package com.pchmn.materialchips.adapter;
 
 import android.content.Context;
-import android.os.Build;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +12,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pchmn.materialchips.ChipView;
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.model.ChipInterface;
+import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.ChipsInputEditText;
 import com.pchmn.materialchips.views.DetailedChipView;
-import com.pchmn.materialchips.model.Chip;
-import com.pchmn.materialchips.util.ViewUtil;
 import com.pchmn.materialchips.views.FilterableListView;
 
 import java.util.ArrayList;
@@ -125,6 +123,7 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         mEditText.setHint(mHintLabel);
+        mEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         mEditText.setBackgroundResource(android.R.color.transparent);
         // prevent fullscreen on landscape
         mEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
@@ -168,33 +167,36 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private void autofitEditText() {
         // min width of edit text = 50 dp
-        ViewGroup.LayoutParams params = mEditText.getLayoutParams();
-        params.width = ViewUtil.dpToPx(50);
-        mEditText.setLayoutParams(params);
+
+        /*
+         * Fixes RTL bug
+         */
+//        ViewGroup.LayoutParams params = mEditText.getLayoutParams();
+//        params.width = ViewUtil.dpToPx(50);
+//        mEditText.setLayoutParams(params);
 
         // listen to change in the tree
         mEditText.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             @Override
             public void onGlobalLayout() {
-                // get right of recycler and left of edit text
-                int right = mRecycler.getRight();
-                int left = mEditText.getLeft();
-
-                // edit text will fill the space
-                ViewGroup.LayoutParams params = mEditText.getLayoutParams();
-                params.width = right - left - ViewUtil.dpToPx(8);
-                mEditText.setLayoutParams(params);
+                /*
+                 * Fixes RTL bug
+                 */
+//                // get right of recycler and left of edit text
+//                int right = mRecycler.getRight();
+//                int left = mEditText.getLeft();
+//
+//                // edit text will fill the space
+//                ViewGroup.LayoutParams params = mEditText.getLayoutParams();
+//                params.width = right - left - ViewUtil.dpToPx(8);
+//                mEditText.setLayoutParams(params);
 
                 // request focus
                 mEditText.requestFocus();
 
                 // remove the listener:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    mEditText.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    mEditText.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
+                mEditText.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
 
         });

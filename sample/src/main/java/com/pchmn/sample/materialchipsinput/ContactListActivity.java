@@ -5,37 +5,37 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.model.ChipInterface;
+import com.pchmn.sample.materialchipsinput.databinding.ActivityContactListBinding;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class ContactListActivity extends AppCompatActivity {
 
     private static final String TAG = ContactListActivity.class.toString();
-    @BindView(R.id.chips_input) ChipsInput mChipsInput;
-    @BindView(R.id.validate) Button mValidateButton;
-    @BindView(R.id.chip_list) TextView mChipListText;
+    
+    private ActivityContactListBinding binding;
+
     private List<ContactChip> mContactList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_list);
-        // butter knife
-        ButterKnife.bind(this);
+        
+        binding = ActivityContactListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         mContactList = new ArrayList<>();
 
         // get contact list
@@ -51,7 +51,7 @@ public class ContactListActivity extends AppCompatActivity {
                 });
 
         // chips listener
-        mChipsInput.addChipsListener(new ChipsInput.ChipsListener() {
+        binding.chipsInput.addChipsListener(new ChipsInput.ChipsListener() {
             @Override
             public void onChipAdded(ChipInterface chip, int newSize) {
                 Log.e(TAG, "chip added, " + newSize);
@@ -69,23 +69,23 @@ public class ContactListActivity extends AppCompatActivity {
         });
 
         // show selected chips
-        mValidateButton.setOnClickListener(new View.OnClickListener() {
+        binding.validate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 String listString = "";
-                for(ContactChip chip: (List<ContactChip>)  mChipsInput.getSelectedChipList()) {
+                for(ContactChip chip: (List<ContactChip>)  binding.chipsInput.getSelectedChipList()) {
                     listString += chip.getLabel() + " (" + (chip.getInfo() != null ? chip.getInfo(): "") + ")" + ", ";
                 }
 
-                mChipListText.setText(listString);
+                binding.chipList.setText(listString);
             }
         });
     }
 
     /**
      * Get the contacts of the user and add each contact in the mContactList
-     * And finally pass the mContactList to the mChipsInput
+     * And finally pass the mContactList to the binding.chipsInput
      */
     private void getContactList() {
         Cursor phones = this.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null,null,null, null);
@@ -124,6 +124,6 @@ public class ContactListActivity extends AppCompatActivity {
         }
 
         // pass contact list to chips input
-        mChipsInput.setFilterableList(mContactList);
+        binding.chipsInput.setFilterableList(mContactList);
     }
 }

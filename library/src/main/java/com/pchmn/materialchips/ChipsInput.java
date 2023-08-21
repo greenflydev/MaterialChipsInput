@@ -7,14 +7,14 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.EditText;
+import android.view.LayoutInflater;
+
+import androidx.core.content.ContextCompat;
 
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager;
 import com.pchmn.materialchips.adapter.ChipsAdapter;
+import com.pchmn.materialchips.databinding.ChipsInputBinding;
 import com.pchmn.materialchips.model.Chip;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ActivityUtil;
@@ -28,16 +28,14 @@ import com.pchmn.materialchips.views.ScrollViewMaxHeight;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class ChipsInput extends ScrollViewMaxHeight {
 
     private static final String TAG = ChipsInput.class.toString();
     // context
     private Context mContext;
-    // xml element
-    @BindView(R2.id.chips_recycler) RecyclerView mRecyclerView;
+    
+    private ChipsInputBinding binding;
+    
     // adapter
     private ChipsAdapter mChipsAdapter;
     // attributes
@@ -85,10 +83,8 @@ public class ChipsInput extends ScrollViewMaxHeight {
      * @param attrs the attributes
      */
     private void init(AttributeSet attrs) {
-        // inflate layout
-        View rootView = inflate(getContext(), R.layout.chips_input, this);
-        // butter knife
-        ButterKnife.bind(this, rootView);
+
+        binding = ChipsInputBinding.inflate(LayoutInflater.from(getContext()), this, true);
 
         // attributes
         if(attrs != null) {
@@ -132,13 +128,13 @@ public class ChipsInput extends ScrollViewMaxHeight {
         }
 
         // adapter
-        mChipsAdapter = new ChipsAdapter(mContext, this, mRecyclerView);
+        mChipsAdapter = new ChipsAdapter(mContext, this, binding.chipsRecycler);
         ChipsLayoutManager chipsLayoutManager = ChipsLayoutManager.newBuilder(mContext)
                 .setOrientation(ChipsLayoutManager.HORIZONTAL)
                 .build();
-        mRecyclerView.setLayoutManager(chipsLayoutManager);
-        mRecyclerView.setNestedScrollingEnabled(false);
-        mRecyclerView.setAdapter(mChipsAdapter);
+        binding.chipsRecycler.setLayoutManager(chipsLayoutManager);
+        binding.chipsRecycler.setNestedScrollingEnabled(false);
+        binding.chipsRecycler.setAdapter(mChipsAdapter);
 
         // set window callback
         // will hide DetailedOpenView and hide keyboard on touch outside
