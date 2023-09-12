@@ -168,20 +168,34 @@ public class ChipsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private void autofitEditText() {
         // min width of edit text = 50 dp
 
+        ViewGroup.LayoutParams params = mEditText.getLayoutParams();
         /*
-         * Fixes RTL bug
+         * Make the view span the whole width. This makes the edit spot below any chips.
+         * It won't be on the same line as the chips.
          */
-//        ViewGroup.LayoutParams params = mEditText.getLayoutParams();
-//        params.width = ViewUtil.dpToPx(50);
-//        mEditText.setLayoutParams(params);
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+
+        /*
+         * This will configure things for RTL languages if the locale is set to RTL
+         */
+        boolean isRTL = mContext.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        if (isRTL) {
+            mEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        } else {
+            mEditText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        }
+
+        mEditText.setLayoutParams(params);
 
         // listen to change in the tree
         mEditText.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             @Override
             public void onGlobalLayout() {
+
                 /*
-                 * Fixes RTL bug
+                 * Don't need these pieces anymore. The edittext will be below the chips and not
+                 * on the same line as any chips.
                  */
 //                // get right of recycler and left of edit text
 //                int right = mRecycler.getRight();

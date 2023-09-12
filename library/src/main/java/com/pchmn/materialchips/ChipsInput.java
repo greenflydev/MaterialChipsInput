@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
@@ -209,6 +210,17 @@ public class ChipsInput extends ScrollViewMaxHeight {
 
     public ChipsInputEditText getEditText() {
         ChipsInputEditText editText = new ChipsInputEditText(mContext);
+
+        /*
+         * This will configure things for RTL languages if the locale is set to RTL
+         */
+        boolean isRTL = mContext.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+        if (isRTL) {
+            editText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        } else {
+            editText.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        }
+
         if(mHintColor != null)
             editText.setHintTextColor(mHintColor);
         if(mTextColor != null)
