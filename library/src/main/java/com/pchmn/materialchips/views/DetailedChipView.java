@@ -1,35 +1,24 @@
 package com.pchmn.materialchips.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.animation.AlphaAnimation;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.pchmn.materialchips.R;
-import com.pchmn.materialchips.R2;
-import com.pchmn.materialchips.model.Chip;
+import com.pchmn.materialchips.databinding.DetailedChipViewBinding;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ColorUtil;
 import com.pchmn.materialchips.util.LetterTileProvider;
-import com.pchmn.materialchips.util.MyWindowCallback;
-import com.pchmn.materialchips.util.ViewUtil;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class DetailedChipView extends RelativeLayout {
@@ -37,12 +26,9 @@ public class DetailedChipView extends RelativeLayout {
     private static final String TAG = DetailedChipView.class.toString();
     // context
     private Context mContext;
-    // xml elements
-    @BindView(R2.id.content) RelativeLayout mContentLayout;
-    @BindView(R2.id.avatar_icon) CircleImageView mAvatarIconImageView;
-    @BindView(R2.id.name) TextView mNameTextView;
-    @BindView(R2.id.info) TextView mInfoTextView;
-    @BindView(R2.id.delete_button) ImageButton mDeleteButton;
+    
+    private DetailedChipViewBinding binding;
+    
     // letter tile provider
     private static LetterTileProvider mLetterTileProvider;
     // attributes
@@ -66,10 +52,9 @@ public class DetailedChipView extends RelativeLayout {
      * @param attrs the attributes
      */
     private void init(AttributeSet attrs) {
-        // inflate layout
-        View rootView = inflate(getContext(), R.layout.detailed_chip_view, this);
-        // butter knife
-        ButterKnife.bind(this, rootView);
+
+        binding = DetailedChipViewBinding.inflate(LayoutInflater.from(getContext()), this, true);
+
         // letter tile provider
         mLetterTileProvider = new LetterTileProvider(mContext);
 
@@ -115,39 +100,39 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public void setAvatarIcon(Drawable icon) {
-        mAvatarIconImageView.setImageDrawable(icon);
+        binding.avatarIcon.setImageDrawable(icon);
     }
 
     public void setAvatarIcon(Bitmap icon) {
-        mAvatarIconImageView.setImageBitmap(icon);
+        binding.avatarIcon.setImageBitmap(icon);
     }
 
     public void setAvatarIcon(Uri icon) {
-        mAvatarIconImageView.setImageURI(icon);
+        binding.avatarIcon.setImageURI(icon);
     }
 
     public void setName(String name) {
-        mNameTextView.setText(name);
+        binding.name.setText(name);
     }
 
     public void setInfo(String info) {
         if(info != null) {
-            mInfoTextView.setVisibility(VISIBLE);
-            mInfoTextView.setText(info);
+            binding.info.setVisibility(VISIBLE);
+            binding.info.setText(info);
         }
         else {
-            mInfoTextView.setVisibility(GONE);
+            binding.info.setVisibility(GONE);
         }
     }
 
     public void setTextColor(ColorStateList color) {
-        mNameTextView.setTextColor(color);
-        mInfoTextView.setTextColor(ColorUtil.alpha(color.getDefaultColor(), 150));
+        binding.name.setTextColor(color);
+        binding.info.setTextColor(ColorUtil.alpha(color.getDefaultColor(), 150));
     }
 
     public void setBackGroundcolor(ColorStateList color) {
         mBackgroundColor = color;
-        mContentLayout.getBackground().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+        binding.content.getBackground().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
     }
 
     public int getBackgroundColor() {
@@ -155,23 +140,23 @@ public class DetailedChipView extends RelativeLayout {
     }
 
     public void setDeleteIconColor(ColorStateList color) {
-        mDeleteButton.getDrawable().mutate().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+        binding.deleteButton.getDrawable().mutate().setColorFilter(color.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
     }
 
     public void setOnDeleteClicked(OnClickListener onClickListener) {
-        mDeleteButton.setOnClickListener(onClickListener);
+        binding.deleteButton.setOnClickListener(onClickListener);
     }
 
     public void alignLeft() {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentLayout.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.content.getLayoutParams();
         params.leftMargin = 0;
-        mContentLayout.setLayoutParams(params);
+        binding.content.setLayoutParams(params);
     }
 
     public void alignRight() {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mContentLayout.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.content.getLayoutParams();
         params.rightMargin = 0;
-        mContentLayout.setLayoutParams(params);
+        binding.content.setLayoutParams(params);
     }
 
     public static class Builder {

@@ -1,85 +1,76 @@
 package com.pchmn.sample.materialchipsinput;
 
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.pchmn.materialchips.ChipView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.pchmn.materialchips.ChipView;
+import com.pchmn.sample.materialchipsinput.databinding.ActivityChipExamplesBinding;
 
 public class ChipExamplesActivity extends AppCompatActivity {
 
     private static final String TAG = ChipExamplesActivity.class.toString();
-    @BindView(R.id.layout) LinearLayout mLayout;
-    @BindView(R.id.chip1) ChipView mChip1;
-    @BindView(R.id.chip2) ChipView mChip2;
-    @BindView(R.id.chip3) ChipView mChip3;
-    @BindView(R.id.chip4) ChipView mChip4;
-    @BindView(R.id.chip5) ChipView mChip5;
-    @BindView(R.id.chip6) ChipView mChip6;
-    @BindView(R.id.chip7) ChipView mChip7;
+    
+    private ActivityChipExamplesBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chip_examples);
-        // butter knife
-        ButterKnife.bind(this);
+        
+        binding = ActivityChipExamplesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // chip 1
-        mChip1.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip1.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip1.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip1.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
-        mChip1.setOnDeleteClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip1.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
+        binding.chip1.setOnDeleteClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip1.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
 
         // chip 2
-        mChip2.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip2.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip2.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip2.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
 
         // chip 3
-        mChip3.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip3.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip3.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip3.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
-        mChip3.setOnDeleteClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip3.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
+        binding.chip3.setOnDeleteClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip3.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
 
         // chip 4
-        mChip4.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip4.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip4.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip4.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
-        mChip4.setOnDeleteClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip4.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
+        binding.chip4.setOnDeleteClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip4.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
 
         // chip 5
-        mChip5.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip5.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip5.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip5.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
 
         // chip 6
-        mChip6.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip6.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip6.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip6.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
-        mChip6.setOnDeleteClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip6.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
+        binding.chip6.setOnDeleteClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip6.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
 
         // chip 7
-        mChip7.setOnChipClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip7.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
+        binding.chip7.setOnChipClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip7.getLabel() + ": clicked", Toast.LENGTH_SHORT).show();
         });
-        mChip7.setOnDeleteClicked(view -> {
-            Toast.makeText(ChipExamplesActivity.this, mChip7.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
+        binding.chip7.setOnDeleteClicked(view -> {
+            Toast.makeText(ChipExamplesActivity.this, binding.chip7.getLabel() + ": delete clicked", Toast.LENGTH_SHORT).show();
         });
 
 
@@ -97,7 +88,7 @@ public class ChipExamplesActivity extends AppCompatActivity {
         chipView2.setAvatarIcon(uri);
         chipView2.setDeleteIconColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
-        mLayout.addView(chipView1);
-        mLayout.addView(chipView2);
+        binding.layout.addView(chipView1);
+        binding.layout.addView(chipView2);
     }
 }

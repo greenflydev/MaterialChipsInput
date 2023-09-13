@@ -7,8 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -16,24 +15,23 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Filter;
 import android.widget.RelativeLayout;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.pchmn.materialchips.ChipsInput;
-import com.pchmn.materialchips.R;
-import com.pchmn.materialchips.R2;
 import com.pchmn.materialchips.adapter.FilterableAdapter;
+import com.pchmn.materialchips.databinding.ListFilterableViewBinding;
 import com.pchmn.materialchips.model.ChipInterface;
 import com.pchmn.materialchips.util.ViewUtil;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class FilterableListView extends RelativeLayout {
 
     private static final String TAG = FilterableListView.class.toString();
     private Context mContext;
-    // list
-    @BindView(R2.id.recycler_view) RecyclerView mRecyclerView;
+
+    private ListFilterableViewBinding binding;
+    
     private FilterableAdapter mAdapter;
     private List<? extends ChipInterface> mFilterableList;
     // others
@@ -46,13 +44,11 @@ public class FilterableListView extends RelativeLayout {
     }
 
     private void init() {
-        // inflate layout
-        View view = inflate(getContext(), R.layout.list_filterable_view, this);
-        // butter knife
-        ButterKnife.bind(this, view);
+        
+        binding = ListFilterableViewBinding.inflate(LayoutInflater.from(getContext()), this, true);
 
         // recycler
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
 
         // hide on first
         setVisibility(GONE);
@@ -63,10 +59,10 @@ public class FilterableListView extends RelativeLayout {
         mChipsInput = chipsInput;
 
         // adapter
-        mAdapter = new FilterableAdapter(mContext, mRecyclerView, filterableList, chipsInput, backgroundColor, textColor);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new FilterableAdapter(mContext, binding.recyclerView, filterableList, chipsInput, backgroundColor, textColor);
+        binding.recyclerView.setAdapter(mAdapter);
         if(backgroundColor != null)
-            mRecyclerView.getBackground().setColorFilter(backgroundColor.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
+            binding.recyclerView.getBackground().setColorFilter(backgroundColor.getDefaultColor(), PorterDuff.Mode.SRC_ATOP);
 
         // listen to change in the tree
         mChipsInput.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
